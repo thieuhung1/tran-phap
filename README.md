@@ -81,12 +81,11 @@
 
 ## 🚀 CÁCH KHỞI CHẠY
 
-### Cách 1: Chạy file thực thi đã biên dịch sẵn (Nhanh nhất)
-Chạy file thực thi đã biên dịch tối ưu (Release mode) tại:
-```powershell
-d:\dev\tu tiên\tu_tien_tran\target\release\tu_tien_tran.exe
-```
-Hoặc chạy file `Chay_Phap_Tran.bat` ngoài thư mục gốc.
+### Cách 1: Khởi chạy trực tiếp (Nhanh nhất - Có Icon đẹp)
+Bạn có thể nhấp đúp vào bất kỳ file nào ngoài thư mục gốc:
+- **`Chay_Phap_Tran.exe`**: File chạy trực tiếp có gắn icon Pháp Trận sắc nét.
+- **`Chay_Phap_Tran.lnk`**: Shortcut phím tắt có biểu tượng Pháp Trận tu tiên.
+- **`Chay_Phap_Tran.bat`**: File script khởi động tự động.
 
 ### Cách 2: Khởi chạy bằng Cargo (Mã nguồn)
 Mở PowerShell tại thư mục dự án và chạy:
@@ -94,3 +93,4 @@ Mở PowerShell tại thư mục dự án và chạy:
 cd "d:\dev\tu tiên\tu_tien_tran"
 cargo run --release
 ```
+
