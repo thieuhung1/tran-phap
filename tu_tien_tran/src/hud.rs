@@ -102,6 +102,7 @@ impl HudState {
                 "",
                 "[CHUOT TRAI]: KEO DI CHUYEN PHAP TRAN",
                 "[CHUOT PHAI / SPACE]: DOI CANH GIOI",
+                "[G / ALT+G / C]: DOI CHE DO DONG HO (FULL / MINIMAL / OFF)",
                 "[CHUOT GIUA / S / ALT+S]: DOI TOC DO QUAY",
                 "[PHIM 1-5]: CHON 5 MUC TOC DO (TINH TAM -> BAO PHAT)",
                 "[PHIM [ / ] HOAC UP/DOWN]: TANG / GIAM TOC DO",
@@ -112,7 +113,6 @@ impl HudState {
                 "[H]: DONG BANG HUONG DAN NAY",
                 "[ESC / Q / ALT+Q]: THU HOI PHAP TRAN (THOAT)",
             ];
-
 
             let mut line_y = start_y + 18.0;
             for (idx, line) in lines.iter().enumerate() {
@@ -133,6 +133,7 @@ impl HudState {
         let status_text = format!("CANH GIOI: {} | TOC DO: {} | {}", theme.short_name(), speed_name, click_str);
         let tag_w = (status_text.len() as f32) * 6.5 + 20.0;
         let tag_x = (pixmap.width() as f32 - tag_w) / 2.0;
+
 
         let mut tag_bg = PathBuilder::new();
         tag_bg.push_rect(tiny_skia::Rect::from_xywh(tag_x, 15.0, tag_w, 20.0).unwrap());

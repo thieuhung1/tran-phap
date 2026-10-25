@@ -10,6 +10,8 @@ pub const HOTKEY_TOGGLE_CLICKTHROUGH: i32 = 101;
 pub const HOTKEY_NEXT_THEME: i32 = 102;
 pub const HOTKEY_EXIT: i32 = 103;
 pub const HOTKEY_CYCLE_SPEED: i32 = 104;
+pub const HOTKEY_CYCLE_CLOCK: i32 = 105;
+
 
 
 pub struct DesktopOverlayWindow {
@@ -101,8 +103,11 @@ impl DesktopOverlayWindow {
             RegisterHotKey(hwnd, HOTKEY_NEXT_THEME, MOD_ALT as u32, 'C' as u32);
             // Alt + S: Cycle Speed
             RegisterHotKey(hwnd, HOTKEY_CYCLE_SPEED, MOD_ALT as u32, 'S' as u32);
+            // Alt + G: Cycle Clock Mode (Gio)
+            RegisterHotKey(hwnd, HOTKEY_CYCLE_CLOCK, MOD_ALT as u32, 'G' as u32);
             // Alt + Q: Exit
             RegisterHotKey(hwnd, HOTKEY_EXIT, MOD_ALT as u32, 'Q' as u32);
+
 
 
             let hdc_screen = GetDC(0);
@@ -291,7 +296,9 @@ impl Drop for DesktopOverlayWindow {
             UnregisterHotKey(self.hwnd, HOTKEY_TOGGLE_CLICKTHROUGH);
             UnregisterHotKey(self.hwnd, HOTKEY_NEXT_THEME);
             UnregisterHotKey(self.hwnd, HOTKEY_CYCLE_SPEED);
+            UnregisterHotKey(self.hwnd, HOTKEY_CYCLE_CLOCK);
             UnregisterHotKey(self.hwnd, HOTKEY_EXIT);
+
 
 
             if self.hbitmap != 0 {

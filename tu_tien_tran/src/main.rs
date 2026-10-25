@@ -1,3 +1,4 @@
+mod clock;
 mod formation;
 mod hud;
 mod particles;
@@ -9,12 +10,13 @@ use tiny_skia::{Color, Pixmap};
 use windows_sys::Win32::UI::Input::KeyboardAndMouse::*;
 use windows_sys::Win32::UI::WindowsAndMessaging::*;
 
+use clock::CelestialClock;
 use formation::MagicFormation;
 use hud::HudState;
 use theme::RealmTheme;
 use window::{
-    DesktopOverlayWindow, HOTKEY_CYCLE_SPEED, HOTKEY_EXIT, HOTKEY_NEXT_THEME,
-    HOTKEY_TOGGLE_CLICKTHROUGH,
+    DesktopOverlayWindow, HOTKEY_CYCLE_CLOCK, HOTKEY_CYCLE_SPEED, HOTKEY_EXIT,
+    HOTKEY_NEXT_THEME, HOTKEY_TOGGLE_CLICKTHROUGH,
 };
 
 fn main() {
@@ -23,6 +25,7 @@ fn main() {
     println!("======================================================");
     println!("* Chuot Trai          : Keo di chuyen phap tran");
     println!("* Chuot Phai / Space  : Doi Canh Gioi (Theme)");
+    println!("* Phim G / C / Alt + G: Doi Che Do Dong Ho (Full / Minimal / Tat)");
     println!("* Chuot Giua (Nhan)   : Doi Toc Do Quay (Tuan hoan 5 muc)");
     println!("* Phim S hoac Alt + S : Doi Toc Do Quay (Hoat dong toan cuc)");
     println!("* Phim 1 -> 5         : Chon truc tiep 5 cap toc do");
@@ -45,6 +48,7 @@ fn main() {
     };
 
     let mut formation = MagicFormation::new();
+    let mut clock = CelestialClock::new();
     let mut hud = HudState::new();
     let mut theme = RealmTheme::KimDan;
 
@@ -98,6 +102,10 @@ fn main() {
                                 speed_idx = (speed_idx + 1) % speeds.len();
                                 hud.notify(format!("TOC DO: {}", speeds[speed_idx].1));
                             }
+                            HOTKEY_CYCLE_CLOCK => {
+                                clock.mode = clock.mode.next();
+                                hud.notify(clock.mode.name());
+                            }
                             HOTKEY_EXIT => {
                                 running = false;
                             }
@@ -112,7 +120,11 @@ fn main() {
                                 theme = theme.next();
                                 hud.notify(format!("CANH GIOI: {}", theme.short_name()));
                             }
-                            0x54 => { // 'T' key
+                            0x47 | 0x43 => { // 'G' or 'C' key: Cycle clock mode
+                                clock.mode = clock.mode.next();
+                                hud.notify(clock.mode.name());
+                            }
+                            0x54 => { // 'T' key: Toggle Click-Through
                                 let ct = window.toggle_click_through();
                                 hud.notify(if ct {
                                     "XUYEN THAU CHUOT: BAT (BAM ALT+T DE TAT)"
@@ -265,7 +277,17 @@ fn main() {
             show_particles,
         );
 
-        // 2. Update and render HUD notifications
+        // 2. Update and render Celestial Clock (Đồng Hồ Tiên Đạo)
+        clock.update();
+        clock.draw(
+            &mut pixmap,
+            cx,
+            cy,
+            max_radius,
+            &theme,
+        );
+
+        // 3. Update and render HUD notifications
         hud.update(dt);
         hud.draw(
             &mut pixmap,
@@ -276,10 +298,10 @@ fn main() {
             speed_name,
         );
 
-        // 3. Blit transparent surface to desktop
+        // 4. Blit transparent surface to desktop
         window.render_frame(&pixmap);
 
-        // 4. Smooth 60 FPS frame rate limiting (~16.6ms)
+        // 5. Smooth 60 FPS frame rate limiting (~16.6ms)
         let elapsed = frame_start.elapsed();
         let target_frame_time = Duration::from_micros(16_666);
         if elapsed < target_frame_time {
