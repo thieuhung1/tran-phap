@@ -1,0 +1,5 @@
+/target
+/tu_tien_tran/target
+*.pdb
+.idea
+.vscode
