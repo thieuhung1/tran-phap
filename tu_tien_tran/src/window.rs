@@ -54,18 +54,21 @@ impl DesktopOverlayWindow {
 
             let cursor = LoadCursorW(0, IDC_ARROW);
 
+            let icon = LoadIconW(hinstance, 1 as *const u16);
+
             let wnd_class = WNDCLASSW {
                 style: CS_HREDRAW | CS_VREDRAW,
                 lpfnWndProc: Some(window_proc),
                 cbClsExtra: 0,
                 cbWndExtra: 0,
                 hInstance: hinstance,
-                hIcon: 0,
+                hIcon: icon,
                 hCursor: cursor,
                 hbrBackground: 0,
                 lpszMenuName: std::ptr::null(),
                 lpszClassName: class_name.as_ptr(),
             };
+
 
             RegisterClassW(&wnd_class);
 
@@ -95,6 +98,10 @@ impl DesktopOverlayWindow {
             if hwnd == 0 {
                 return Err("Failed to create Win32 window".to_string());
             }
+
+            SendMessageW(hwnd, WM_SETICON, ICON_BIG as usize, icon as isize);
+            SendMessageW(hwnd, WM_SETICON, ICON_SMALL as usize, icon as isize);
+
 
             // Register Global Hotkeys so user can control the formation even in Click-Through mode!
             // Alt + T: Toggle Click-Through

@@ -1,6 +1,11 @@
 # 🌀 PHÁP TRẬN TU TIÊN NGOÀI MÀN HÌNH (DESKTOP CULTIVATION OVERLAY)
 
+<p align="center">
+  <img src="icon.png" width="160" alt="Pháp Trận Tu Tiên Icon" />
+</p>
+
 Ứng dụng hiển thị **Pháp Trận Tu Tiên** xoay động lơ lửng trực tiếp trên màn hình máy tính (Windows Desktop Overlay) được viết hoàn toàn bằng ngôn ngữ **Rust**.
+
 
 ---
 
